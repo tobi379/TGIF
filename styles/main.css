@@ -1,0 +1,57 @@
+html {
+    padding: 0;
+    margin: 0;
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+/* index */
+/* Header */
+.header {
+    width: 100%;
+    height: 15rem;
+} 
+
+.header__img {
+    width: 4rem;
+    height: 4rem;
+}
+
+.header__text {
+    font-size: 2rem;
+}
+
+@media (min-width: 768px) {
+    .header__text {
+        font-size: 2.2rem;
+    }
+
+    .header__title {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 280px) {
+    .header {
+        flex-direction: column;
+    }
+}
+
+@media (min-width: 540px) {
+    .wrapp {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .main {
+        width: 50%;
+    }
+    .tablas {
+        width: 50%;
+    }
+}
