@@ -122,7 +122,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                      <tr v-for = "member in leastEngagedS">
+                      <tr v-for = "member in senateEngaged.leastEngaged">
                         <td><a :href="member.url" target="_blank">{{member.first_name}} {{member.middle_name || ""}} {{member.last_name}}</a></td>
                         <td>{{member.missed_votes}}</td>
                         <td>{{member.missed_votes_pct}} %</td>
@@ -142,7 +142,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                      <tr v-for = "member in mostEngagedS">
+                      <tr v-for = "member in senateEngaged.mostEngaged">
                         <td><a :href="member.url" target="_blank">{{member.first_name}} {{member.middle_name || ""}} {{member.last_name}}</a></td>
                         <td>{{member.missed_votes}}</td>
                         <td>{{member.missed_votes_pct}} %</td>

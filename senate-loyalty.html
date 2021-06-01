@@ -121,7 +121,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                      <tr v-for = "member in leastLoyalS">
+                      <tr v-for = "member in senateLoyalty.leastLoyal">
                         <td><a :href="member.url" target="_blank">{{member.first_name}} {{member.middle_name || ""}} {{member.last_name}}</a></td>
                         <td>{{member.total_votes}}</td>
                         <td>{{member.votes_with_party_pct}} %</td>
@@ -141,7 +141,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                      <tr v-for = "member in mostLoyalS">
+                      <tr v-for = "member in senateLoyalty.mostLoyal">
                         <td><a :href="member.url" target="_blank">{{member.first_name}} {{member.middle_name || ""}} {{member.last_name}}</a></td>
                         <td>{{member.total_votes}}</td>
                         <td>{{member.votes_with_party_pct}} %</td>

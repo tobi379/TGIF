@@ -45,24 +45,26 @@ const app = Vue.createApp({
             },
 
             // Attendance
-            leastEngagedH : [],
-            mostEngagedH : [],
+            houseEngaged : {
+                leastEngaged : [],
+                mostEngaged : [],
+            },
 
-            leastEngagedS : [],
-            mostEngagedS : [],
+            senateEngaged : {
+                leastEngaged : [],
+                mostEngaged : [],
+            },
 
             // Loyal
-            leastLoyalH : [],
-            mostLoyalH : [],
+            houseLoyalty : {
+                leastLoyalH : [],
+                mostLoyalH : [],
+            },
 
-            leastLoyalS : [],
-            mostLoyalS : [],
-
-            leastPorcentajeS : [],
-            mostPorcentajeS : [],
-
-            leastPorcentajeH : [],
-            mostPorcentajeH : [],
+            senateLoyalty : {
+                leastLoyalS : [],
+                mostLoyalS : [],
+            }
         }
     },
     created() {
@@ -72,11 +74,11 @@ const app = Vue.createApp({
                 this.contador(this.senate, this.senateGlance)
                 this.total(this.senateGlance)
 
-                this.engagedSenate(true)
-                this.engagedSenate(false)
+                this.engaged(this.senate, true, this.senateEngaged)
+                this.engaged(this.senate, false, this.senateEngaged)
 
-                this.loyaltySenate(true)
-                this.loyaltySenate(false)
+                this.loyalty(this.senate, true, this.senateLoyalty)
+                this.loyalty(this.senate, false, this.senateLoyalty)
             })
         fetch('https://api.propublica.org/congress/v1/113/house/members.json', this.init)
             .then(resp => resp.json())
@@ -85,11 +87,11 @@ const app = Vue.createApp({
                 this.contador(this.house, this.houseGlance)
                 this.total(this.houseGlance)
 
-                this.engagedHouse(true)
-                this.engagedHouse(false)
+                this.engaged(this.house, true, this.houseEngaged)
+                this.engaged(this.house, false, this.houseEngaged)
 
-                this.loyaltyHouse(true)
-                this.loyaltyHouse(false)
+                this.loyalty(this.house, true, this.houseLoyalty)
+                this.loyalty(this.house, false, this.houseLoyalty)
             })
     },
     methods : {
@@ -138,8 +140,8 @@ const app = Vue.createApp({
             element.total = element.democrats + element.republicans + element.independents
         },
 
-        engagedHouse (boolean) {
-            let save = [...this.house]
+        engaged (array, boolean, element) {
+            let save = [...array]
         
             save.sort ((a,b) => {
                 if (a.missed_votes < b.missed_votes) {
@@ -159,63 +161,25 @@ const app = Vue.createApp({
                 return 0
             })
 
-            let numero = parseInt(this.house.length * 0.1)
+            let numero = parseInt(array.length * 0.1)
             let newArray = save.slice(0, numero + 1)
             let maximo = newArray[newArray.length - 1].missed_votes
 
-            this.house.forEach(a => {
+            array.forEach(a => {
                 if (a.missed_votes === maximo) {
                     newArray.push(a)
                 }
             })
-            
+
             if (boolean) {
-                this.leastEngagedH = newArray
+                element.leastEngaged = newArray
             } else {
-                this.mostEngagedH = newArray
+                element.mostEngaged = newArray
             }
         },
 
-        engagedSenate (boolean) {
-            let save = [...this.senate]
-        
-            save.sort ((a,b) => {
-                if (a.missed_votes < b.missed_votes) {
-                    if (boolean) {
-                        return -1
-                    } else {
-                        return 1
-                    }
-                }
-                if (a.missed_votes > b.missed_votes) {
-                    if (boolean) {
-                        return 1
-                    } else {
-                        return -1
-                    }
-                }
-                return 0
-            })
-
-            let numero = parseInt(this.senate.length * 0.1)
-            let newArray = save.slice(0, numero + 1)
-            let maximo = newArray[newArray.length - 1].missed_votes
-
-            this.senate.forEach(a => {
-                if (a.missed_votes === maximo) {
-                    newArray.push(a)
-                }
-            })
-            
-            if (boolean) {
-                this.leastEngagedS = newArray
-            } else {
-                this.mostEngagedS = newArray
-            }
-        },
-
-        loyaltyHouse (boolean) {
-            let save = [...this.house]
+        loyalty (array, boolean, element) {
+            let save = [...array]
         
             save.sort ((a,b) => {
                 if (a.votes_with_party_pct < b.votes_with_party_pct) {
@@ -235,11 +199,11 @@ const app = Vue.createApp({
                 return 0
             })
 
-            let numero = parseInt(this.house.length * 0.1)
+            let numero = parseInt(array.length * 0.1)
             let newArray = save.slice(0, numero + 1)
             let maximo = newArray[newArray.length - 1].votes_with_party_pct
 
-            this.house.forEach(a => {
+            array.forEach(a => {
                 if (a.votes_with_party_pct === maximo) {
                     newArray.push(a)
                 }
@@ -247,50 +211,11 @@ const app = Vue.createApp({
             })
 
             if (boolean) {
-                this.leastLoyalH = newArray
+                element.leastLoyal = newArray
             } else {
-                this.mostLoyalH = newArray
+                element.mostLoyal = newArray
             }
-        },
-
-        loyaltySenate (boolean) {
-            let save = [...this.senate]
-        
-            save.sort ((a,b) => {
-                if (a.votes_with_party_pct < b.votes_with_party_pct) {
-                    if (boolean) {
-                        return -1
-                    } else {
-                        return 1
-                    }
-                }
-                if (a.votes_with_party_pct > b.votes_with_party_pct) {
-                    if (boolean) {
-                        return 1
-                    } else {
-                        return -1
-                    }
-                }
-                return 0
-            })
-
-            let numero = parseInt(this.senate.length * 0.1)
-            let newArray = save.slice(0, numero + 1)
-            let maximo = newArray[newArray.length - 1].votes_with_party_pct
-
-            this.senate.forEach(a => {
-                if (a.votes_with_party_pct === maximo) {
-                    newArray.push(a)
-                }
-                a.total_votes = Math.round((a.total_votes * a.votes_with_party_pct) / 100)
-            })
-            
-            if (boolean) {
-                this.leastLoyalS = newArray
-            } else {
-                this.mostLoyalS = newArray
-            }
-        },
+        }
     },
     computed: {
         filtrarMiembrosH() {
